@@ -1,8 +1,9 @@
 import catchAsync from "../Utils/catchAsync.js"
 import Task from "../Models/taskMd.js"
 import ApiFeatures from "../Utils/apiFeatures.js"
+import HandleERROR from "../Utils/handleError.js"
 export const createTasks=catchAsync(async(req,res,next)=>{
-    const task=await Task.create({...req.body,userId:req.Userid})
+    const task=await Task.create({...req.body,userId:req.userId})
     return res.status(201).json({
         success:true,
         message:"Create Task Successfully",
@@ -12,11 +13,11 @@ export const createTasks=catchAsync(async(req,res,next)=>{
 export const getAllMyTasks=catchAsync(async(req,res,next)=>{
     const queryString={...req.query,filters,userId:req.userId}
     const features=new ApiFeatures(Category,queryString).filter().sort().limitFields().paginate().populate()
-    const categories=await features.query
+    const tasks=await features.query
     return res.status(200).json({
         success:true,
         message:"Get Task Successfully",
-        data:categories
+        data:tasks
     })
 })
 export const getOneMyTask=catchAsync(async(req,res,next)=>{
@@ -25,7 +26,7 @@ export const getOneMyTask=catchAsync(async(req,res,next)=>{
     return res.status(200).json({
         success:true,
         message:"Get Task Successfully",
-        data:category
+        data:task
     })
 })
 export const updateTasks=catchAsync(async(req,res,next)=>{
@@ -37,7 +38,7 @@ export const updateTasks=catchAsync(async(req,res,next)=>{
     return res.status(200).json({
         success:true,
         message:"Update Category Successfully",
-        data:category
+        data:task
     })
 })
 export const removeTasks=catchAsync(async(req,res,next)=>{
@@ -49,6 +50,6 @@ export const removeTasks=catchAsync(async(req,res,next)=>{
     return res.status(200).json({
         success:true,
         message:"Delete Category Successfully",
-        data:category
+        data:task
     })
 })
