@@ -44,7 +44,7 @@ export const updateCategories=catchAsync(async(req,res,next)=>{
 })
 export const removeCategories=catchAsync(async(req,res,next)=>{
     const {id}=req.params
-    const category=await Category.findOneAndUpdate({_id:id,userId:req.userId})
+    const category=await Category.findOneAndDelete({_id:id,userId:req.userId})
     if(!category){
         return next(new HandleERROR('category not found',404))
     }
